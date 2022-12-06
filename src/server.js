@@ -5,7 +5,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const base64 = require('base-64');
 
-const { UsersModel } = require('./models/Users');
+const { UsersModel } = require('./auth/models/users-model.js');
 
 // Prepare the express app
 const app = express();

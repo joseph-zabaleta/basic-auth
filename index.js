@@ -1,6 +1,6 @@
 'use strict'
 
-const { sequelizeDatabase } = require('./src/models/Users.js');
+const { sequelizeDatabase } = require('./src/auth/models/users-model.js');
 const server = require('./src/server.js');
 
 
