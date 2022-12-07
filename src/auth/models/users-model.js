@@ -1,29 +1,42 @@
 'use strict';
 
-const { Sequelize, DataTypes } = require('sequelize');
-
-// NOTE: connected to sqlite::memory out of box for proof of life
-// TODO: 
-// connect postgres for local dev environment and prod
-// handle SSL requirements
-// connect with sqlite::memory for testing
-const DATABASE_URL = 'sqlite::memory'
-
-const sequelizeDatabase = new Sequelize(DATABASE_URL);
+const bcrypt = require('bcrypt');
 
 // Create a Sequelize model
-const UsersModel = sequelizeDatabase.define('User', {
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  }
-});
+const usersSchema = (sequelizeDatabase, DataTypes) => {
 
-module.exports = {
-  UsersModel,
-  sequelizeDatabase
+  const model = sequelizeDatabase.define('User', {
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    }
+  
+  });
+
+  model.beforeCreate(async (user) => {
+    let hashPassword = await bcrypt.hash(user.password, 10);
+    user.password = hashPassword;
+  });
+
+  model.authenticateBasic = async function (username, password) {
+
+    // Search user table to find a user for a given username
+    // { username: stickey, password: adfFkadfad= }
+    const user = await this.findOne( { where: { username }})
+
+    const valid = await bcrypt.compare(password, user.password);
+
+    if (valid) {
+      return user;
+    } 
+  };
+
+  return model;
+
 }
+
+module.exports = usersSchema;
