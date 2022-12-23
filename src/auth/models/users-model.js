@@ -27,12 +27,13 @@ const usersSchema = (sequelizeDatabase, DataTypes) => {
     // Search user table to find a user for a given username
     // { username: stickey, password: adfFkadfad= }
     const user = await this.findOne( { where: { username }})
-
     const valid = await bcrypt.compare(password, user.password);
 
     if (valid) {
       return user;
     } 
+
+    throw new Error('Invalid User');
   };
 
   return model;

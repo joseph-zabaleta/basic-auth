@@ -3,7 +3,7 @@
 const base64 = require('base-64');
 const { UsersModel } = require('../models/index.js');
 
-const basicAuthMiddleware = (req, res, next) => {
+const basicAuthMiddleware = async (req, res, next) => {
 
   /*
     req.headers.authorization is : "Basic sdkjdsljd="
@@ -23,7 +23,7 @@ const basicAuthMiddleware = (req, res, next) => {
 
     try {
 
-      req.user = UsersModel.authenticateBasic(username, password)
+      req.user = await UsersModel.authenticateBasic(username, password)
       next();
 
     } catch (error) {

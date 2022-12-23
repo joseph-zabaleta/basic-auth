@@ -1,5 +1,8 @@
 'use strict';
 
+require('dotenv').config();
+const PORT = process.env.PORT || 3002;
+
 // 3rd Party Resources
 const express = require('express');
 const cors = require('cors');
@@ -21,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(authRoutes);
 
 function start() {
-  app.listen(3000, () => console.log('server up'));
+  app.listen(PORT, () => console.log(`SERVER IS UP ON PORT: ${PORT}`));
 };
 
 module.exports = { 

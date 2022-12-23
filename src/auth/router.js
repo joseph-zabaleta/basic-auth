@@ -16,12 +16,11 @@ const basicAuthMiddleware = require('./middleware/basic.js');
 const handleSignup = async (req, res) => {
 
   try {
-    // console.log(req);
-    console.log(req.body);
-    req.body.password = await bcrypt.hash(req.body.password, 10);
     const record = await UsersModel.create(req.body);
     res.status(200).json(record);
-  } catch (e) { res.status(403).send('Error Creating User'); }
+  } catch (e) { 
+    res.status(403).send('Error Creating User'); 
+  }
 
 }
 
